@@ -49,7 +49,6 @@ export class MyScene extends CGFscene {
 
     this.earthAppearance.setTexture(this.earthTexture);
     this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
-
     this.grassTexture = new CGFtexture (this, "images/grass.jpg");
     this.grassAppearance = new CGFappearance(this);
     
