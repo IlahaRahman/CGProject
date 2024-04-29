@@ -20,12 +20,12 @@ export class MySphere extends CGFobject {
         var x, y, z;
         var normalX, normalY, normalZ;
 
-        var stackStep = this.stacks !== 0 ? (this.inverted ? -1 : 1) : 0;
-        var sliceStep = this.slices !== 0 ? (this.inverted ? -1 : 1) : 0;
+        // var stackStep = this.stacks !== 0 ? (this.inverted ? -1 : 1) : 0;
+        // var sliceStep = this.slices !== 0 ? (this.inverted ? -1 : 1) : 0;
 
 
-        for (var stack = 0; stack <= this.stacks && stackStep!== 0; stack+=stackStep) {
-            for (var slice = 0; slice <= this.slices && sliceStep!==0; slice+=sliceStep) {
+        for (var stack = 0; stack <= this.stacks; stack++) {
+            for (var slice = 0; slice <= this.slices ; slice++) {
                 phi = (stack * Math.PI) / this.stacks;
                 theta = (slice * 2 * Math.PI) / this.slices;
 
@@ -33,9 +33,9 @@ export class MySphere extends CGFobject {
                 y = Math.cos(phi);
                 z = Math.sin(theta) * Math.sin(phi);
 
-                normalX = x;
-                normalY = y;
-                normalZ = z;
+                normalX = (this.inverted ?-x: x);
+                normalY = (this.inverted ?-y: y);
+                normalZ = (this.inverted ?-z: z);
 
                 this.vertices.push(x, y, z);
                 this.normals.push(normalX, normalY, normalZ);

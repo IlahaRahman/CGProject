@@ -49,7 +49,8 @@ export class MyScene extends CGFscene {
 
     this.earthAppearance.setTexture(this.earthTexture);
     this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
-    this.grassTexture = new CGFtexture (this, "images/grass.jpg");
+
+    this.grassTexture = new CGFtexture (this, "images/earth.jpg");
     this.grassAppearance = new CGFappearance(this);
     
     this.grassAppearance.setTexture(this.grassTexture);
@@ -118,16 +119,16 @@ export class MyScene extends CGFscene {
 
     // Display the panorama centered on the camera position
     this.pushMatrix();
-    const cameraPosition = this.camera.position;
-    this.translate(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+    // const cameraPosition = this.camera.position;
+    // //this.translate(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
     this.panorama.display();
     this.popMatrix();
 
-    // ---- END Primitive drawing section
-    const error = this.gl.getError();
-    if (error !== this.gl.NO_ERROR) {
-        console.error('WebGL error:', error);
-    }
+    // // ---- END Primitive drawing section
+    // const error = this.gl.getError();
+    // if (error !== this.gl.NO_ERROR) {
+    //     console.error('WebGL error:', error);
+    // }
     
   }
 }
