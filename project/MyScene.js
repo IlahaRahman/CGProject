@@ -2,6 +2,9 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPanorama } from "./MyPanorama.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from './MySphere.js';
+import { MyRock } from './MyRock.js';
+import { MyRockSet } from "./MyRockSet.js";
+
 
 /**
  * MyScene
@@ -12,6 +15,8 @@ export class MyScene extends CGFscene {
     super();
     this.panoramaTexture = null;
     this.panorama = null;
+    this.myRockSet=null;
+    this.rocks=[]
     
   }
 
@@ -34,6 +39,7 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,20,20);
+    this.myRockSet = new MyRockSet (this,10);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -50,12 +56,23 @@ export class MyScene extends CGFscene {
     this.earthAppearance.setTexture(this.earthTexture);
     this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-    this.grassTexture = new CGFtexture (this, "images/earth.jpg");
+    this.grassTexture = new CGFtexture (this, "images/grass.jpg");
     this.grassAppearance = new CGFappearance(this);
     
     this.grassAppearance.setTexture(this.grassTexture);
     this.grassAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
+    this.grayAppearance = new CGFappearance(this);
+    this.grayAppearance.setAmbient(0.5, 0.5, 0.5, 1); // Gray ambient color
+    this.grayAppearance.setDiffuse(0.5, 0.5, 0.5, 1); // Gray diffuse color
+    this.grayAppearance.setSpecular(0.1, 0.1, 0.1, 1); // Gray specular color
+    this.grayAppearance.setShininess(10); // Shininess value for the gray appearance
+
+    for (let i=0; i<10; i++)
+    {
+      const rock = new MyRock(this, Math.random()*5+1);
+      this.rocks.push(rock);
+    }
   }
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
@@ -121,7 +138,16 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     // const cameraPosition = this.camera.position;
     // //this.translate(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+    this.scale(200,200,200);
     this.panorama.display();
+    this.popMatrix();
+
+
+    // Display a single rock
+    this.pushMatrix();
+    this.grassAppearance.apply();
+    this.translate(10, -100, 0); // Example: Translate the rock to a specific position
+    this.rocks[0].display(); // Display the first rock in the array
     this.popMatrix();
 
     // // ---- END Primitive drawing section
