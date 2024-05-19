@@ -1,54 +1,41 @@
-import { CGFobject } from '../lib/CGF.js';
-import { Triangle } from './Triangle.js';
+import { CGFobject } from "../lib/CGF.js";
 
-/**
- * Represents a petal. It's composed of two triangles joined together.
- */
 class MyPetal extends CGFobject {
-  constructor(scene, length = 2, peakHeight = 1) {
+  constructor(scene, width, height) {
     super(scene);
-
-    this.scene = scene;
-    this.length = length;
-    this.peakHeight = peakHeight;
-
-    this.firstTriangle = new Triangle(scene, this.length, this.peakHeight);
-    this.secondTriangle = new Triangle(scene, this.length, this.peakHeight);
-
+    this.width = width;
+    this.height = height;
     this.initBuffers();
   }
 
-  enableNormalViz() {
-    super.enableNormalViz();
-    this.firstTriangle.enableNormalViz();
-    this.secondTriangle.enableNormalViz();
-  }
-
-  disableNormalViz() {
-    super.disableNormalViz();
-    this.firstTriangle.disableNormalViz();
-    this.secondTriangle.disableNormalViz();
-  }
-
   initBuffers() {
-    this.vertices = [];
-    this.indices = [];
-    this.normals = [];
-  }
+    this.vertices = [
+      // First triangle
+      0, 0, 0, // Vertex 0
+      this.width, 0, 0, // Vertex 1
+      this.width / 2, this.height, 0, // Vertex 2
 
-  display() {
-    // Display the first triangle (closer to center)
-    this.scene.pushMatrix();
-    this.scene.rotate(-Math.PI / 8, 0, 0, 1); // Adjust rotation for curvature
-    this.firstTriangle.display();
-    this.scene.popMatrix();
+      // Second triangle
+      this.width / 2, this.height, 0, // Vertex 2 (repeated)
+      0, this.height, 0, // Vertex 3
+      0, 0, 0, // Vertex 0 (repeated)
+    ];
 
-    // Display the second triangle (farther from center)
-    this.scene.pushMatrix();
-    this.scene.translate(0, this.peakHeight, 0);
-    this.scene.rotate(Math.PI / 8, 0, 0, 1); // Adjust rotation for curvature
-    this.secondTriangle.display();
-    this.scene.popMatrix();
+    this.indices = [
+      // First triangle
+      0, 1, 2,
+      // Second triangle
+      3, 4, 5,
+    ];
+
+    this.normals = [
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1,
+    ];
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();

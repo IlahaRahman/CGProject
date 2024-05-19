@@ -1,29 +1,37 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFobject } from "../lib/CGF.js";
 
-class MyWing extends CGFobject {
+export class MyWing extends CGFobject {
   constructor(scene) {
     super(scene);
-    this.initBuffers();
-  }
+    this.scene = scene;
 
-  initBuffers() {
     this.vertices = [
-      0, 0, 0,
-      1, 0, 0,
-      0.5, 0, 1
+      -0.5, 0, 0,
+      0.5, 0, 0,
+      0.3, 0.5, 0,
+      -0.3, 0.5, 0,
+      0, 1, 0
     ];
 
-    this.indices = [0, 1, 2];
+    this.indices = [
+      0, 1, 2,
+      0, 2, 3,
+      3, 2, 4
+    ];
 
     this.normals = [
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 0
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1,
+      0, 0, 1
     ];
 
     this.texCoords = [
       0, 0,
       1, 0,
+      0.8, 0.5,
+      0.2, 0.5,
       0.5, 1
     ];
 
@@ -31,12 +39,14 @@ class MyWing extends CGFobject {
     this.initGLBuffers();
   }
 
+  initBuffers() {
+    this.gl = this.scene.gl;
+    this.initGLBuffers();
+  }
+
   display() {
     this.scene.pushMatrix();
-    this.scene.scale(2, 1, 1); // Adjust the wing size
     super.display();
     this.scene.popMatrix();
   }
 }
-
-export { MyWing };

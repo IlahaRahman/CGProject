@@ -11,13 +11,21 @@ class MyGarden extends CGFobject {
     this.cols = cols;
     this.flowers = [];
 
+    const spacingX = 5; // Adjust the spacing between flowers along the x-axis
+    const spacingZ = 5; // Adjust the spacing between flowers along the z-axis
+
     // Create flowers at each position in the garden
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        const x = getRandom(-20, 20); // Random x position
-        const z = getRandom(-20, 20); // Random z position
-        this.flowers.push(new MyFlower(scene));
-        this.flowers[this.flowers.length - 1].setPosition(x, z); // Set position of the flower
+        const petalCount = Math.floor(getRandom(3, 8));
+        const stemHeight = getRandom(3, 6);
+
+        // Uniformly space flowers and add some random variation
+        const x = i * spacingX + getRandom(-1, 1);
+        const z = j * spacingZ + getRandom(-1, 1);
+        const flower = new MyFlower(scene, petalCount, stemHeight);
+        flower.setPosition(x,z); // Set position of the flower, ensuring y is 0
+        this.flowers.push(flower);
       }
     }
   }
@@ -25,15 +33,10 @@ class MyGarden extends CGFobject {
   display() {
     // Display all flowers in the garden
     for (let i = 0; i < this.flowers.length; i++) {
-      // Calculate position of the flower based on row and column
-      const row = Math.floor(i / this.cols);
-      const col = i % this.cols;
-      const x = (col - this.cols / 2) * 5; // Adjust position based on garden size
-      const z = (row - this.rows / 2) * 5; // Adjust position based on garden size
-      
+      const flower = this.flowers[i];
       this.scene.pushMatrix();
-      this.scene.translate(x, 0, z); // Translate to flower position
-      this.flowers[i].display(); // Display the flower
+      this.scene.translate(flower.position.x, flower.position.y, flower.position.z); // Translate to flower position
+      flower.display(); // Display the flower
       this.scene.popMatrix();
     }
   }
