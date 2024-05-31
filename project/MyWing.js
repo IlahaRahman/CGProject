@@ -30,8 +30,8 @@ export class MyWing extends CGFobject {
     this.texCoords = [
       0, 0,
       1, 0,
-      0.8, 0.5,
-      0.2, 0.5,
+      0.85, 0.5,
+      0.15, 0.5,
       0.5, 1
     ];
 

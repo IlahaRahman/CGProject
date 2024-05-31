@@ -25,17 +25,22 @@ export class MyFlower extends CGFobject {
     this.petals = [];
     this.petalYoffsets = [];
     for (let i = 0; i < this.petalCount; i++) {
-      this.petals.push(new MyPetal(scene));
+      this.petals.push(new MyPetal(scene)); // Adjust width and height as needed
       this.petalYoffsets.push(getRandom(-0.5, 0.5));
     }
 
-    this.position = { x: 0, y: 0, z: 0 }; // Initialize position
+    // this.position = { x: 0, y: 0, z: 0 }; // Initialize position
+    // this.scale = 1; // Initialize scale
 
     this.initBuffers();
   }
 
-  setPosition(x, z) {
-    this.position = { x, y: 0, z }; // Ensure y is set to 0 for ground level
+  setPosition(x, y, z) {
+    this.position = { x, y, z }; // Set position including y for ground level
+  }
+
+  setScale(scale) {
+    this.scale = scale;
   }
 
   enableNormalViz() {
@@ -76,17 +81,17 @@ export class MyFlower extends CGFobject {
   }
 
   display() {
-
     this.scene.pushMatrix();
     this.scene.translate(this.position.x, this.position.y, this.position.z);
+    this.scene.scale(this.scale, this.scale, this.scale); // Apply scaling
 
     // Display stem parts
     for (let i = 0; i < this.stemParts.length; i++) {
-      const y = 0 - i * 1.1;
+      const y = i * 1.1;
       this.scene.pushMatrix();
-      this.scene.translate(this.position.x, this.position.y + y, this.position.z);
+      this.scene.translate(0, y, 0);
       this.scene.scale(0.3, 1, 0.3);
-      this.scene.rotate(Math.PI / 2, 1, 0, 0);
+      this.scene.rotate(-Math.PI / 2, 1, 0, 0);
       this.stemParts[i].display();
       this.scene.popMatrix();
     }
@@ -96,7 +101,7 @@ export class MyFlower extends CGFobject {
     this.scene.setDiffuse(1, 1, 0, 1);
     this.scene.setSpecular(1, 1, 1, 1);
     this.scene.pushMatrix();
-    this.scene.translate(this.position.x, this.position.y, this.position.z);
+    this.scene.translate(0, this.stemParts.length * 1.1, 0);
     this.receptacle.display();
     this.scene.popMatrix();
 
@@ -109,19 +114,14 @@ export class MyFlower extends CGFobject {
       this.scene.setDiffuse(1, 192 / 255, 204 / 255, 1);
 
       this.scene.pushMatrix();
-      this.scene.translate(this.position.x, this.position.y, this.position.z);
+      this.scene.translate(0, this.stemParts.length * 1.1, 0);
       this.scene.rotate(rotation, 0, 1, 0);
-
-      // Randomize the point where petal connects to the receptacle
-      const y = getRandom(0, 0.5);
-      this.scene.translate(0, 0, this.petalYoffsets[i]);
-
+      this.scene.translate(0, 0, 0.5); // Adjust the z-position of the petals
+      this.scene.rotate(Math.PI / 4, 1, 0, 0); // Rotate to align the petals correctly
       this.petals[i].display();
       this.scene.popMatrix();
     }
+
     this.scene.popMatrix();
-    
-    this.primitiveType = this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
   }
 }
