@@ -13,6 +13,9 @@ export class MyBee extends CGFobject {
         this.basePosition = vec3.fromValues(0, 5, 0); // Base position for oscillation
         this.orientation = 0; // Angle around the YY axis
         this.velocity = vec3.create(); // Initially zero
+        this.oscillationTime=0;
+        this.wingAngle=0;
+
 
         // Create bee components
         this.head = new MySphere(scene, 16, 8);
@@ -219,19 +222,36 @@ export class MyBee extends CGFobject {
     }
 
     turn(v) {
-        this.orientation += v;
-        // Update the velocity vector direction
+        // Convert degrees to radians for more intuitive control
+        let radians = v * Math.PI / 180;
+        this.orientation += radians;
+    
+        // Calculate new direction vector from orientation
         let direction = vec3.fromValues(Math.sin(this.orientation), 0, Math.cos(this.orientation));
-        vec3.scale(this.velocity, direction, vec3.length(this.velocity));
+    
+        // Update the velocity's direction without changing its magnitude (speed)
+        let speed = vec3.length(this.velocity);
+        vec3.scale(this.velocity, direction, speed);
+    
+        console.log(`Turn: orientation=${this.orientation} radians, velocity=[${this.velocity}]`);
     }
 
     accelerate(v) {
+        let speedChange = v * this.speedFactor; // Adjust speed change by a speed factor for better control
+        let currentSpeed = vec3.length(this.velocity);
+        let newSpeed = currentSpeed + speedChange;
+        
+        // Ensure the new speed is not negative
+        newSpeed = Math.max(0, newSpeed);
+    
+        // Get the current direction of the bee
         let direction = vec3.fromValues(Math.sin(this.orientation), 0, Math.cos(this.orientation));
-        let newVelocity = vec3.create();
-        vec3.scale(newVelocity, direction, v);
-        vec3.add(this.velocity, this.velocity, newVelocity);
+    
+        // Update the velocity with the new speed in the existing direction
+        vec3.scale(this.velocity, direction, newSpeed);
+    
+        console.log(`Accelerate: New Speed=${newSpeed}, velocity=[${this.velocity}]`);
     }
-
     reset() {
         this.position = vec3.fromValues(0, 5, 0);
         this.basePosition = vec3.fromValues(0, 5, 0);

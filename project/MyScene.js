@@ -18,6 +18,7 @@ export class MyScene extends CGFscene {
     this.rockSet = null;
     this.flowers = [];
     this.bee = null;
+    this.lastUpdateTime=0;
   }
 
   init(application) {
@@ -44,6 +45,7 @@ export class MyScene extends CGFscene {
 
     // Objects connected to MyInterface
     this.displayAxis = true;
+    this.displayNormals=false;
     this.scaleFactor = 1;
     this.speedFactor = 1;
 
@@ -128,8 +130,9 @@ export class MyScene extends CGFscene {
   }
 
   createFlowers() {
+
     const numFlowers = 10;
-    const groundY = 10; // Y-position of the ground plane
+    const groundY = -50; // Y-position of the ground plane
     for (let i = 0; i < numFlowers; i++) {
       const x = getRandom(-20, 20);
       const z = getRandom(-20, 20);
@@ -270,12 +273,15 @@ export class MyScene extends CGFscene {
     }
   }
 
+  
+
   update(t) {
    
     const delta_t = t - (this.lastUpdateTime || 0);
     this.lastUpdateTime = t;
+
     this.checkKeys();
     this.bee.update(delta_t / 1000.0); // Convert milliseconds to seconds
-    this.garden.display();
+    // this.garden.display();
   }
 }

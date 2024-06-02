@@ -18,8 +18,8 @@ export class MyInterface extends CGFinterface {
         this.processKeyboard = function () { };
         this.activeKeys = {};
         if (!this.listenersAttached) {
-            // document.addEventListener('keydown', (event) => this.processKeyDown(event));
-            // document.addEventListener('keyup', (event) => this.processKeyUp(event));
+            document.addEventListener('keydown', (event) => this.processKeyDown(event));
+            document.addEventListener('keyup', (event) => this.processKeyUp(event));
             this.listenersAttached = true;
         }
     }
