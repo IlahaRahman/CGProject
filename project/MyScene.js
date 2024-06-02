@@ -132,7 +132,7 @@ export class MyScene extends CGFscene {
   createFlowers() {
 
     const numFlowers = 10;
-    const groundY = -50; // Y-position of the ground plane
+    const groundY = 10; // Y-position of the ground plane
     for (let i = 0; i < numFlowers; i++) {
       const x = getRandom(-20, 20);
       const z = getRandom(-20, 20);
